@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Chatbot</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFFDD0; /* Cream background */
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        /* Fullscreen Chat Modal Styles */
+        .chat-fullscreen {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 0; /* No rounded corners for fullscreen */
+            position: fixed; /* Fixed position for fullscreen */
+            top: 0;
+            left: 0;
+        }
+
+        .chat-header {
+            background-color: #DAA520;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-title {
+            flex: 1;
+            text-align: center;
+            margin: 0;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-output {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .chat-input textarea {
+            flex: 1;
+            padding: 10px;
+            resize: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .chat-input button {
+            background: linear-gradient(45deg, #DAA520, #8B0000);
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        /* Suggested Questions */
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .suggestions button {
+            background-color: #FFFDD0;
+            color: #8B0000;
+            border: 1px solid #DAA520;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .suggestions button:hover {
+            background-color: #DAA520;
+            color: white;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Fullscreen Chat Modal -->
+<div class="chat-fullscreen" id="chat-fullscreen">
+    <div class="chat-header">
+        <h3 class="chat-title">Get Your Ingredients</h3>
+        <div class="header-buttons">
+            <button id="clear-chat-btn" style="background: none; border: none; color: white; cursor: pointer;">Clear</button>
+            <a href="http://localhost/Agrocraft-An-E-Commerce-Website-For-Fresh-Farm-Produce-Vegetables-And-Fruits-master/BuyerPortal2/bhome.php">
+                <button id="close-chat-btn" class="close-btn">&times;</button>
+            </a>
+        </div>
+    </div>
+    <div class="chat-output" id="chat-output">
+        <p>Welcome! What kinds of dishes do you plan to prepare, and for how many people? </p>
+    </div>
+    <div class="suggestions" id="suggestions"></div>
+
+    <!-- Language Selection and Chat Input -->
+    <div class="chat-input">
+        <select id="language-select">
+            <option value="en-US">English</option>
+            <option value="ta-IN">Tamil</option>
+        </select>
+        <textarea id="user-input" placeholder="Type your message here..."></textarea>
+        <button id="send-btn">Send</button>
+        <button id="mic-btn">&#x1F3A4;</button>
+    </div>
+</div>
+
+<script>
+    const initialSuggestions = [
+        "How to prepare Chicken Biriyani for 50 People?",
+        "How to cook Tomato Rice?",
+        "How many people can eat 100KG of Chicken Biriyani?",
+        "Give the Ingredient for Chicken Biriyani..",
+        "How to prepare Chicken biriyani?"
+    ];
+
+    let recognizing = false;
+    let recognition;
+
+    if ('webkitSpeechRecognition' in window) {
+        recognition = new webkitSpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onstart = function () {
+            recognizing = true;
+            document.getElementById('mic-btn').classList.add('mic-active');
+        };
+
+        recognition.onresult = function (event) {
+            const transcript = event.results[0][0].transcript;
+            document.getElementById('user-input').value = transcript;
+        };
+
+        recognition.onend = function () {
+            recognizing = false;
+            document.getElementById('mic-btn').classList.remove('mic-active');
+        };
+
+        recognition.onerror = function (event) {
+            recognizing = false;
+            console.error("Error:", event.error);
+            document.getElementById('mic-btn').classList.remove('mic-active');
+        };
+    }
+
+    function preloadSuggestions(questions) {
+        const suggestionsContainer = document.getElementById('suggestions');
+        suggestionsContainer.innerHTML = '';
+        questions.forEach(question => {
+            const suggestionButton = document.createElement('button');
+            suggestionButton.textContent = question;
+            suggestionButton.onclick = function () {
+                addMessageToChat('You: ' + question);
+                sendToChatbot(question);
+            };
+            suggestionsContainer.appendChild(suggestionButton);
+        });
+    }
+
+    function addMessageToChat(message) {
+        const chatOutput = document.getElementById('chat-output');
+        const newMessage = document.createElement('p');
+        newMessage.textContent = message;
+        chatOutput.appendChild(newMessage);
+        chatOutput.scrollTop = chatOutput.scrollHeight;
+    }
+
+    async function sendToChatbot(userInput) {
+        try {
+            const response = await fetch('/chatbot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: userInput })
+            });
+            const data = await response.json();
+            addMessageToChat('Chatbot: ' + data.reply);
+            updateSuggestions(data.suggestions);
+        } catch (error) {
+            addMessageToChat('Error: Unable to connect to the chatbot.');
+        }
+    }
+
+    function updateSuggestions(suggestions) {
+        const suggestionsContainer = document.getElementById('suggestions');
+        suggestionsContainer.innerHTML = '';
+        suggestions.forEach(question => {
+            const suggestionButton = document.createElement('button');
+            suggestionButton.textContent = question;
+            suggestionButton.onclick = function () {
+                addMessageToChat('You: ' + question);
+                sendToChatbot(question);
+            };
+            suggestionsContainer.appendChild(suggestionButton);
+        });
+    }
+
+    document.getElementById('send-btn').addEventListener('click', function () {
+        const userInput = document.getElementById('user-input').value;
+        if (userInput.trim()) {
+            addMessageToChat('You: ' + userInput);
+            sendToChatbot(userInput);
+            document.getElementById('user-input').value = '';
+        }
+    });
+
+    document.getElementById('mic-btn').addEventListener('click', function () {
+        const language = document.getElementById('language-select').value;
+        recognition.lang = language;
+
+        if (recognizing) {
+            recognition.stop();
+        } else {
+            recognition.start();
+        }
+    });
+
+    // Clear chat button functionality
+    document.getElementById('clear-chat-btn').addEventListener('click', function () {
+        document.getElementById('chat-output').innerHTML = '';
+    });
+    
+
+    // Handle Enter key for sending messages
+    document.getElementById('user-input').addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default action of the Enter key
+            const userInput = document.getElementById('user-input').value;
+            if (userInput.trim()) {
+                addMessageToChat('You: ' + userInput);
+                sendToChatbot(userInput);
+                document.getElementById('user-input').value = '';
+            }
+        }
+    });
+
+    // Preload initial suggestions
+    window.onload = function () {
+        preloadSuggestions(initialSuggestions);
+    };
+</script>
+</body>
+</html>
