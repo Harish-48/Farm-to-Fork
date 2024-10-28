@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmtoFork</title>
+    <link rel="stylesheet" href="Styles/AgroCraft.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script>
+        // Simulate a loading page
+        window.onload = function() {
+            setTimeout(function() {
+                document.getElementById("loader").style.display = "none"; // Hide loader
+                document.getElementById("content").style.display = "block"; // Show content
+            }, 1000); // Delay set to 1000 milliseconds for visibility
+        };
+
+        // Theme switcher function
+        //function toggleTheme() {
+            //const body = document.body;
+            //body.classList.toggle("dark-theme");
+            //const themeButton = document.getElementById("theme-button");
+            //themeButton.innerText = body.classList.contains("dark-theme") ? "Switch to Light Theme" : "Switch to Dark Theme";
+        //}
+    </script>
+</head>
+<body>
+    <div id="loader">
+        <div class="loading-text">FARM to<span class="number"></span> FORK</div>
+    </div>
+    
+    <div id="content" style="display: none;">
+        <header>
+            <h1>WELCOME TO FARM to FORK</h1>
+            <div id="are">ARE YOU A</div>
+            <div id="button-container">
+                <a class="button" href="auth/FarmerLogin.php">Farmer</a>
+                <a class="button" href="auth/BuyerLogin.php">Buyers</a>
+            </div>
+            <!--<button id="theme-button" class="theme-button" onclick="toggleTheme()">Switch to Dark Theme</button>-->
+        </header>
+    
+        <section id="features">
+            <h2>Our Features</h2>
+            <div class="feature">
+                <h3>Direct Access</h3>
+                <p>Connect directly with local farmers for fresh produce.</p>
+            </div>
+            <div class="feature">
+                <h3>Affordable Prices</h3>
+                <p>Get quality products at competitive prices.</p>
+            </div>
+            <div class="feature">
+                <h3>Efficient Delivery</h3>
+                <p>Experience quick and reliable delivery services.</p>
+            </div>
+        </section>
+
+		<footer>
+			<div class="footer-content">
+				<div class="footer-section">
+					<h3>About Us</h3>
+					<p>Learn more about our mission and vision.</p>
+				</div>
+				<div class="footer-section">
+					<h3>Contact Us</h3>
+					<p>Email: info@agrocraftexample.com</p>
+					<p>Location: 123 Agro Street, Farmville</p>
+				</div>
+				<div class="footer-section social">
+					<h3>Follow Us</h3>
+					<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+					<a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+				</div>
+			</div>
+			<div class="footer-bottom">
+				<p>&copy; 2024 AgroCraft. All Rights Reserved.</p>
+			</div>
+		</footer>
+		
+		
+    </div>
+</body>
+</html>
