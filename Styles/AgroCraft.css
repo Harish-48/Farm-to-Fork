@@ -1,0 +1,191 @@
+/* General body settings */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #FFFDD0; /* Cream background */
+    color: #000000; /* Black text */
+    transition: background-color 0.5s, color 0.5s;
+}
+
+/* Loader styles */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #006400, #DAA520, #8B0000); /* Deep Green, Warm Gold, and Deep Burgundy */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loading-text {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #FFFDD0; /* Cream text */
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    animation: bounce 1s infinite; /* Bouncing animation */
+}
+
+.loading-text .number {
+    color: #DAA520; /* Warm Gold for the number */
+}
+
+/* Main content styles */
+#content {
+    background-color: #FFFDD0; /* Cream background */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Header styles */
+header {
+    background: linear-gradient(45deg, #DAA520, #8B0000);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    margin-bottom: 40px;
+}
+
+header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #FFF; /* Warm Gold for the heading */
+}
+
+#are {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #FFFDD0; /* Cream for subtitle */
+}
+
+/* Button container */
+#button-container {
+    margin: 20px 0;
+}
+
+/* Button styles */
+.button {
+    font-size: 1.8rem;
+    padding: 15px 30px;
+    border: 3px solid #DAA520; /* Warm Gold border */
+    border-radius: 50px;
+    color: #FFFDD0; /* Cream text */
+    text-decoration: none;
+    background-color: transparent;
+    transition: all 0.3s ease-in-out;
+}
+
+.button:hover {
+    background-color: rgba(218, 165, 32, 0.2); /* Lighter Gold hover effect */
+    transform: scale(1.1);
+}
+
+/* Features section styles */
+#features {
+    background: linear-gradient(45deg, #DAA520, #8B0000);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+#features h2 {
+    color: #DAA520; /* Warm Gold for the features heading */
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.feature {
+    margin-bottom: 20px;
+}
+
+.feature h3 {
+    color: #FFFDD0; /* Cream for feature titles */
+    font-size: 1.8rem;
+}
+
+.feature p {
+    color: #000000; /* Black for feature description */
+}
+
+/* Footer styles */
+footer {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #FFFDD0; /* Cream text */
+    padding: 40px 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-section {
+    margin: 10px;
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-section h3 {
+    color: #DAA520; /* Warm Gold for footer headings */
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    margin: 5px 0;
+}
+
+.social-icon {
+    color: #FFFDD0; /* Cream color for social icons */
+    margin: 0 15px;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+
+.social-icon:hover {
+    color: #DAA520; /* Warm Gold on hover */
+}
+
+.footer-bottom {
+    margin-top: 20px;
+}
+
+/* Responsive styles */
+@media (max-width: 480px) {
+    .loading-text {
+        font-size: 2rem;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    #are {
+        font-size: 1.5rem;
+    }
+
+    .button {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+    }
+
+    #button-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
